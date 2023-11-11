@@ -13,12 +13,16 @@ namespace Banco
     public partial class Banco : Form
     {
         Cliente cliente;
+        Conexao conexao;
 
         public Banco()
         {
             InitializeComponent();
 
             this.cliente = new Cliente();
+            this.conexao = new Conexao();
+
+            LoadListOperacoes();
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -59,6 +63,33 @@ namespace Banco
             textBoxSaque.Clear();
 
             MessageBox.Show("Saque realizado com sucesso!");
+        }
+
+        private void ConfigurarListView()
+        {           
+
+
+        }
+
+        private void LoadListOperacoes()
+        {
+            List<Tuple<string, string>> operacoes = conexao.GetListFromDatabase("movimentacao", "operacao", "valor");
+
+            listBoxOperacoes.Items.Clear();
+
+            foreach (var operacao in operacoes)
+            {
+                ListViewItem listViewItem = new ListViewItem(operacao.Item1);
+
+                listViewItem.SubItems.Add(operacao.Item2);
+
+                listBoxOperacoes.Items.Add(listViewItem);
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
         }
     }
 }

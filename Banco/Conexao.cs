@@ -105,5 +105,41 @@ namespace Banco
             }
         }
 
+        public List<Tuple<string, string>> GetListFromDatabase(string tabela, string firstField, string secondField)
+        {
+            List<Tuple<string, string>> list = new List<Tuple<string, string>>();
+
+            try
+            {
+                OpenConnection();
+
+                string query = $"SELECT {firstField} as {firstField}, {secondField} as {secondField} FROM {tabela}";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string first = reader.GetString(firstField);
+                            string second = reader.GetString(secondField);
+
+                            list.Add(new Tuple<string, string>(firstField, secondField));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro: " + ex.Message);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+
+            return list;
+
+        }
     }
 }
