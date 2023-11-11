@@ -37,6 +37,8 @@ namespace Banco
 
                 textBoxDeposito.Clear();
 
+                labelSaldoValor.Text = cliente.saldo.ToString("0.00");
+
                 MessageBox.Show("Depósito realizado com sucesso!");
             }
             catch (Exception exception)
